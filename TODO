@@ -1,0 +1,32 @@
+
+Todo:
+  Student
+    ☐ Image (External API) [Keep log]
+    ☐ Info (External API) [Keep log]
+    ☐ Search
+      if enter number then search by Nisit ID:
+        if start with "/":
+          search from database
+        if not correct checksum:
+          recalculate checksum
+        if correct checksum:
+          search from database if not found from External API.
+      else search by Name,Surname,Fullname:
+        Thai - Fully correctly spell
+        English - Search correctly spell. If it's no data, by Soundex.
+    ☐ [Admin] Viewing log
+  Attendance
+    ☐ Check-in
+    ☐ Undo Check-in
+    ☐ [Admin] History
+    ☐ [Admin] List all
+  Staff
+    ☐ [Admin] CRUD
+  Auth
+    ☐ Check Credential
+    ☐ Logout
+    2FA
+      ☐ [Admin] Notify
+      ☐ [Admin] Approve/Declined
+      ☐ Update Status
+    ☐ [Admin] History
