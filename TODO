@@ -1,17 +1,18 @@
 
 Todo:
   Student
-    ☐ Image (External API) [Keep log]
-    ☐ Info (External API) [Keep log]
-    ☐ Search
+    ☐ Image (External API) [Keep log] @started(19-03-23 15:37)
+    ☐ Info (External API) [Keep log] @started(19-03-23 15:37)
+    ☐ Search @started(19-03-23 15:37)
       if enter number then search by Nisit ID:
-        if start with "/":
-          search from database
+        if input len is 14:
+          cut start at index 3. total 10 digits
         if not correct checksum:
           recalculate checksum
-        if correct checksum:
-          search from database if not found from External API.
-      else search by Name,Surname,Fullname:
+        return search from database if not found from External API.
+    elif \/[0-9]{1,5}:
+        return search from database by Student ID Surfix
+    else search by Name,Surname,Fullname:
         Thai - Fully correctly spell
         English - Search correctly spell. If it's no data, by Soundex.
     ☐ [Admin] Viewing log
@@ -24,9 +25,4 @@ Todo:
     ☐ [Admin] CRUD
   Auth
     ☐ Check Credential
-    ☐ Logout
-    2FA
-      ☐ [Admin] Notify
-      ☐ [Admin] Approve/Declined
-      ☐ Update Status
     ☐ [Admin] History
