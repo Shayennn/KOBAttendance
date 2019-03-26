@@ -3,7 +3,7 @@ Todo:
   Student
     ☐ Image (External API) [Keep log] @started(19-03-23 15:37)
     ☐ Info (External API) [Keep log] @started(19-03-23 15:37)
-    ☐ Search @started(19-03-23 15:37)
+    ✔ Search @started(19-03-23 15:37) @done(19-03-26 22:05) @lasted(3d6h28m29s)
       if enter number then search by Nisit ID:
         if input len is 14:
           cut start at index 3. total 10 digits
