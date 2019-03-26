@@ -14,6 +14,11 @@ app.use('/test', (req, res, next) => {
     next()
 })
 
+app.use((req, res, next) => {
+    req.db = require('./lib/db')
+    next()
+})
+
 app.get('/', (req, res) => {
     res.send({
         id: 1,
