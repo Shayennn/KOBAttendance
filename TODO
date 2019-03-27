@@ -1,8 +1,8 @@
 
 Todo:
   Student
-    ☐ Image (External API) [Keep log] @started(19-03-23 15:37)
-    ☐ Info (External API) [Keep log] @started(19-03-23 15:37)
+    ✔ Image (External API) [Keep log] @started(19-03-23 15:37) @done(19-03-27 22:32) @lasted(4d6h55m33s)
+    ✔ Info (External API) [Keep log] @started(19-03-23 15:37) @done(19-03-27 22:32) @lasted(4d6h55m35s)
     ✔ Search @started(19-03-23 15:37) @done(19-03-26 22:05) @lasted(3d6h28m29s)
       if enter number then search by Nisit ID:
         if input len is 14:
@@ -24,5 +24,5 @@ Todo:
   Staff
     ☐ [Admin] CRUD
   Auth
-    ☐ Check Credential
-    ☐ [Admin] History
+    ✔ Check Credential @started(19-03-26 22:40) @done(19-03-27 20:22) @lasted(21h42m45s)
+    ✔ [Admin] History @started(19-03-27 20:24) @done(19-03-27 20:50) @lasted(26m41s)
