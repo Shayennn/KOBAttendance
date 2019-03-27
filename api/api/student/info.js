@@ -3,8 +3,12 @@ const router = express.Router()
 module.exports = router
 
 const axios = require('axios')
+const moment = require('moment')
 
-const {VerifyNisitID,GetNisitIDChecksum} = require('./VerifyNisitID')
+const {
+    VerifyNisitID,
+    GetNisitIDChecksum
+} = require('./VerifyNisitID')
 
 const {
     check,
@@ -38,8 +42,17 @@ router.get('/', [
         });
     }
 
-    axios.get(AppConfig.api.student.info.replace('[ID]',parseInt(req.query.id.slice(0, 11))))
+    const db = req.db
+    const stmt = db.prepare('insert into student_data_log (Email, DataOwner, DataType, ViewingTime) values (?,?,?,?)')
+    stmt.bind([
+        req.auth.Email,
+        req.query.id,
+        'Info',
+        moment().format(moment().ISO_8601)
+    ])
+    axios.get(AppConfig.api.student.info.replace('[ID]', parseInt(req.query.id.slice(0, 11))))
         .then(resp => {
+            stmt.run()
             res.send(resp.data)
         }).catch(error => {
             console.log(error);
