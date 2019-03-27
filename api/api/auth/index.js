@@ -8,3 +8,6 @@ router.get('/', (req, res) => {
 
 router.use('/check',require('./check'))
 router.use('/logout',require('./logout'))
+
+router.use('/history',require('../../middleware/checkauth'))
+router.use('/history',require('./history'))
