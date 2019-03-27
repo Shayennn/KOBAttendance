@@ -10,9 +10,9 @@ Todo:
         if not correct checksum:
           recalculate checksum
         return search from database if not found from External API.
-    elif \/[0-9]{1,5}:
+      elif \/[0-9]{1,5}:
         return search from database by Student ID Surfix
-    else search by Name,Surname,Fullname:
+      else search by Name,Surname,Fullname:
         Thai - Fully correctly spell
         English - Search correctly spell. If it's no data, by Soundex.
     ☐ [Admin] Viewing log
