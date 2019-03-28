@@ -78,7 +78,13 @@ router.get('/', async (req, res) => {
             name_split.push('')
         }
         if (isEnglish(keyword)) {
-            let rows = await db.prepare('SELECT * FROM `registered` WHERE soundex(`ENName`) = soundex(?) OR soundex(`ENSurname`) = soundex(?)').bind(name_split).all()
+            let rows = await db.prepare('SELECT * FROM `registered` WHERE (`ENName` LIKE $name AND `ENSurname` LIKE $surname) OR (`ENName` LIKE $surname AND `ENSurname` LIKE $name) OR (soundex(`ENName`) = soundex($l_name) OR soundex(`ENSurname`) = soundex($l_surname))')
+                .bind({
+                    name: name_split[0]+'%',
+                    surname: name_split[1]+'%',
+                    l_name: name_split[0],
+                    l_surname: name_split[1]
+                }).all()
             res.send({
                 searchBy: 'EnglishName then Soundex',
                 keyword: name_split,
@@ -89,7 +95,7 @@ router.get('/', async (req, res) => {
                 first: name_split[0]+'%',
                 second: name_split[1]+'%'
             }
-            let rows = await db.prepare('SELECT * FROM `registered` WHERE `Name` LIKE $first AND `Surname` LIKE $second').bind(param).all()
+            let rows = await db.prepare('SELECT * FROM `registered` WHERE (`Name` LIKE $first AND `Surname` LIKE $second) OR `Surname` LIKE $first').bind(param).all()
             res.send({
                 searchBy: 'ThaiName',
                 keyword: param,
