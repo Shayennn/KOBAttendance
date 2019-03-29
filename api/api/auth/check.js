@@ -40,14 +40,20 @@ router.get('/', async (req, res) => {
         }).then(async resp => {
             const expire = moment().add(resp.data.expires_in, 'seconds').format(moment().ISO_8601)
             const row = await db.prepare('select * from staff where Email = ?').bind(resp.data.email).get()
-            await db.prepare('update staff set Token=?, TokenExpire=? where Email=?').bind([
-                token,
-                expire,
-                resp.data.email
-            ]).run()
-            await db.prepare('insert into login_log (Email, LoginTime, IP) VALUES (?,?,?)').bind([
-                resp.data.email,
-                moment().format(moment().ISO_8601),
+            if (row === undefined) {
+                res.send({
+                    status: false,
+                    msg: 'Unauthorized user'
+                })
+            } else {
+                await db.prepare('update staff set Token=?, TokenExpire=? where Email=?').bind([
+                    token,
+                    expire,
+                    resp.data.email
+                ]).run()
+                await db.prepare('insert into login_log (Email, LoginTime, IP) VALUES (?,?,?)').bind([
+                    resp.data.email,
+                    moment().format(moment().ISO_8601),
                     req.realip
                 ]).run()
                 res.send({
@@ -56,6 +62,7 @@ router.get('/', async (req, res) => {
                     expire: expire,
                     level: row.Level
                 })
+            }
         }).catch(async err => {
             if (err.response.status >= 400 && err.response.status < 500) {
                 await db.prepare('update staff set Token=NULL, TokenExpire=NULL where Token=?').bind(token).run()
