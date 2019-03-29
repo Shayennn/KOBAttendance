@@ -45,10 +45,6 @@ router.get('/', async (req, res) => {
                 expire,
                 resp.data.email
             ]).run()
-            let ip = req.connection.remoteAddress
-            if((req.headers['x-forwarded-for']) === undefined){
-                ip = req.headers['x-forwarded-for']
-            }
             await db.prepare('insert into login_log (Email, LoginTime, IP) VALUES (?,?,?)').bind([
                 resp.data.email,
                 moment().format(moment().ISO_8601),
