@@ -1,6 +1,10 @@
 import pkg from './package'
 
 export default {
+  server: {
+    port: 8000, // default: 3000
+    host: '0.0.0.0' // default: localhost
+  },
   mode: 'spa',
 
   /*
@@ -67,7 +71,7 @@ export default {
     strategies: {
       google: {
         client_id:
-          '956748748298-kr2t08kdbjq3ke18m3vkl6k843mra1cg.apps.googleusercontent.com'
+          '170766219776-jtbcsc1ao0rnov1h2v3fv8i2l995tklu.apps.googleusercontent.com'
       }
     }
   },
