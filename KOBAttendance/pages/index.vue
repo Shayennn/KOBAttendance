@@ -1,10 +1,10 @@
 <template>
   <section class="container">
     <b-row class="pt-3">
-      <b-col xs="3">
+      <b-col xs="3" md="3">
         <UserImg :imgurl="info.img" />
       </b-col>
-      <b-col xs="5">
+      <b-col xs="5" md="5">
         <UserInfo :info="info" />
         <b-button
           v-if="showConfirm"
