@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
             res.send({
                 searchBy: 'NisitID',
                 keyword: keyword,
-                result: null,
+                result: [],
                 error: 'Invalid NisitID'
             })
         }
@@ -54,7 +54,8 @@ router.get('/', async (req, res) => {
                             Name: name,
                             Surname: resp.data.thainame.split(name + ' ')[1],
                             ENName: resp.data.engname.split(' ')[0],
-                            ENSurname: resp.data.engname.split(' ')[1]
+                            ENSurname: resp.data.engname.split(' ')[1],
+                            isRegis: false
                         })
                     }
                 })
@@ -78,7 +79,7 @@ router.get('/', async (req, res) => {
             name_split.push('')
         }
         if (isEnglish(keyword)) {
-            let rows = await db.prepare('SELECT * FROM `registered` WHERE (`ENName` LIKE $name AND `ENSurname` LIKE $surname) OR (`ENName` LIKE $surname AND `ENSurname` LIKE $name) OR (soundex(`ENName`) = soundex($l_name) OR soundex(`ENSurname`) = soundex($l_surname))')
+            let rows = await db.prepare('SELECT * FROM `registered` WHERE (`ENName` LIKE $name AND `ENSurname` LIKE $surname) OR (`ENName` LIKE $surname AND `ENSurname` LIKE $name) OR (soundex(`ENName`) = soundex($l_name) OR soundex(`ENSurname`) = soundex($l_surname) OR soundex(`ENSurname`) = soundex($l_name))')
                 .bind({
                     name: name_split[0]+'%',
                     surname: name_split[1]+'%',
