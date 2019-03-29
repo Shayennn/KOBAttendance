@@ -88,6 +88,7 @@ export default {
       if (this.selected !== null) {
         this.onSelectPerson(this.selected)
       }
+      this.keyword = ''
     },
     setCaretPosition(ctrl, pos) {
       ctrl.focus()
