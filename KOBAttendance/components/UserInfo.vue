@@ -1,15 +1,17 @@
 <template>
   <div>
-    <h2>{{ info.name }} {{ info.surname }}</h2>
+    <h2>
+      {{ info.name }} {{ info.surname }}
+      <span v-show="info.isChecked">
+        <b-badge variant="success" size="lg">Checked</b-badge>
+      </span>
+    </h2>
     <p>{{ info.en_name }}</p>
     <p>
       <span :class="['font-weight-bold']">รหัสนิสิต: </span>{{ info.stdid }}
     </p>
     <p><span :class="['font-weight-bold']">ภาควิชา: </span>{{ info.dep }}</p>
     <p><span :class="['font-weight-bold']">ชั้นปี: </span>{{ info.year }}</p>
-    <h3 v-show="info.isChecked">
-      <b-badge variant="success" size="lg">Checked</b-badge>
-    </h3>
     <p v-if="!info.isReg">
       <b-alert show variant="danger"
         >บุคคลนี้ไม่ได้ลงทะเบียนร่วมกิจกรรม</b-alert
