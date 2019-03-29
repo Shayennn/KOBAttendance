@@ -42,7 +42,7 @@
         </b-list-group-item>
       </b-list-group>
     </b-card>
-    <b-alert v-if="!firstLetter" variant="info" class="mt-2" show>
+    <b-alert v-if="!firstLetter" variant="info" class="mt-3" show>
       <h4>Instruction</h4>
       <hr />
       <p>
