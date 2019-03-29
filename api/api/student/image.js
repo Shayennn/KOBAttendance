@@ -6,9 +6,14 @@ const axios = require('axios')
 const https = require('https');
 const path = require('path')
 
+const Jimp = require("jimp");
+
 const moment = require('moment')
 
-const {VerifyNisitID,GetNisitIDChecksum} = require('./VerifyNisitID')
+const {
+    VerifyNisitID,
+    GetNisitIDChecksum
+} = require('./VerifyNisitID')
 
 const {
     check,
@@ -49,13 +54,40 @@ router.get('/', [
         moment().format(moment().ISO_8601)
     ])
     let filename = std_img_path + parseInt(req.query.id) + '.jpg'
+    // var imageCaption = req.auth.Email.split('@')[0].replace('.', ' ').toLowerCase()
+    // imageCaption = [
+    //     imageCaption.split(' ')[0].charAt(0).toUpperCase() + imageCaption.split(' ')[0].slice(1),
+    //     imageCaption.split(' ')[1].charAt(0).toUpperCase() + imageCaption.split(' ')[1].slice(1),
+    // ].join(' ')
+    var imageCaption = req.auth.Email
+    // imageCaption = [
+    //     imageCaption.split(' ')[0].charAt(0).toUpperCase() + imageCaption.split(' ')[0].slice(1),
+    //     imageCaption.split(' ')[1].charAt(0).toUpperCase() + imageCaption.split(' ')[1].slice(1),
+    // ].join(' ')
+    var loadedImage
     if (fs.existsSync(filename)) {
         stmt.run()
-        res.sendFile(filename, {
-            root: path.join(__dirname, '../..')
-        })
+        Jimp.read(filename)
+            .then(function (image) {
+                loadedImage = image.resize(Jimp.AUTO,400)
+                return Jimp.loadFont(Jimp.FONT_SANS_16_WHITE)
+            })
+            .then(function (font) {
+                loadedImage
+                    .print(font, 20, 370, moment().format('DD-MM-YYYY HH:mm:ss Z'))
+                    .print(font, 20, 10, 'Staff email')
+                    .print(font, 40, 30, imageCaption)
+                    .print(font, 20, 60, "NOT ALLOW TO MAKE A COPY")
+                    .getBuffer(Jimp.MIME_JPEG, function (err, buffer) {
+                        res.set("Content-Type", Jimp.MIME_JPEG);
+                        res.send(buffer);
+                    });
+            })
+            .catch(function (err) {
+                console.error(err)
+            })
     } else {
-        axios.get(AppConfig.api.student.image.replace('[FIRST3]',parseInt(req.query.id.slice(0, 3))).replace('[ID]',parseInt(req.query.id.slice(0, 11))), {
+        axios.get(AppConfig.api.student.image.replace('[FIRST3]', parseInt(req.query.id.slice(0, 3))).replace('[ID]', parseInt(req.query.id.slice(0, 11))), {
             httpsAgent: new https.Agent({
                 rejectUnauthorized: false
             }),
@@ -65,9 +97,25 @@ router.get('/', [
             fs.writeFileSync(filename, resp.data, {
                 flag: 'w'
             })
-            res.sendFile(filename, {
-                root: path.join(__dirname, '../..')
-            })
+            Jimp.read(filename)
+                .then(function (image) {
+                    loadedImage = image.resize(Jimp.AUTO,400)
+                    return Jimp.loadFont(Jimp.FONT_SANS_16_WHITE)
+                })
+                .then(function (font) {
+                    loadedImage
+                        .print(font, 20, 370, moment().format('DD-MM-YYYY HH:mm:ss Z'))
+                        .print(font, 20, 10, 'Staff email')
+                        .print(font, 40, 30, imageCaption)
+                        .print(font, 20, 60, "NOT ALLOW TO MAKE A COPY")
+                        .getBuffer(Jimp.MIME_JPEG, function (err, buffer) {
+                            res.set("Content-Type", Jimp.MIME_JPEG);
+                            res.send(buffer);
+                        });
+                })
+                .catch(function (err) {
+                    console.error(err)
+                })
         }).catch(error => {
             res.send({
                 error: true,
