@@ -48,14 +48,14 @@ router.get('/', async (req, res) => {
             await db.prepare('insert into login_log (Email, LoginTime, IP) VALUES (?,?,?)').bind([
                 resp.data.email,
                 moment().format(moment().ISO_8601),
-                ip
-            ]).run()
-            res.send({
-                status: true,
-                Email: resp.data.email,
-                expire: expire,
-                level: row.Level
-            })
+                    req.realip
+                ]).run()
+                res.send({
+                    status: true,
+                    Email: resp.data.email,
+                    expire: expire,
+                    level: row.Level
+                })
         }).catch(async err => {
             if (err.response.status >= 400 && err.response.status < 500) {
                 await db.prepare('update staff set Token=NULL, TokenExpire=NULL where Token=?').bind(token).run()
