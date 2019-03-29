@@ -24,10 +24,12 @@
 
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown v-if="$auth.$state.loggedIn" right>
-            <template slot="button-content"
-              ><em>{{ $auth.user.name }}</em></template
+            <template slot="button-content">
+              <em>{{ $auth.user.name }}</em>
+            </template>
+            <b-dropdown-item @click="$refs.checkhis.showModal()"
+              >History</b-dropdown-item
             >
-            <b-dropdown-item href="#">History</b-dropdown-item>
             <b-dropdown-item @click="$auth.logout()">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-else @click="$auth.loginWith('google')"
@@ -36,11 +38,17 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <CheckHistory ref="checkhis" />
   </div>
 </template>
 
 <script>
+import CheckHistory from '~/components/CheckHistory.vue'
 export default {
+  name: 'Menu',
+  components: {
+    CheckHistory
+  },
   data() {
     return {
       event_name: 'CPSKByenior2019'
