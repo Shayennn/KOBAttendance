@@ -69,7 +69,6 @@ router.get('/', [
                 root: path.join(__dirname, '../..')
             })
         }).catch(error => {
-            console.log(error);
             res.send({
                 error: true,
                 msg: 'Not found'
