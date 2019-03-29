@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
 
 router.use('/',require('../../middleware/checkauth'))
 
+router.use('/myhistory',require('./myhistory'))
 router.use('/info',require('./info'))
 router.use('/check',require('./check'))
 router.use('/undo',require('./undo'))
