@@ -50,9 +50,17 @@ router.get('/', [
         'Info',
         moment().format(moment().ISO_8601)
     ])
+    const regis = db.prepare('select * from registered where StudentID = ?')
+    regis.bind(req.query.id)
+    const std = regis.get()
+    const check_stmt = db.prepare('select * from attendance where StudentID = ? AND CancelTime is null')
+    check_stmt.bind(req.query.id)
+    const checkin = check_stmt.get()
     axios.get(AppConfig.api.student.info.replace('[ID]', parseInt(req.query.id.slice(0, 11))))
         .then(resp => {
             stmt.run()
+            resp.data['registered'] = std!==undefined
+            resp.data['checked'] = checkin!==undefined
             res.send(resp.data)
         }).catch(error => {
             console.log(error);
