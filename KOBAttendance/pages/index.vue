@@ -6,10 +6,26 @@
       </b-col>
       <b-col xs="5">
         <UserInfo :info="info" />
+        <b-button
+          v-if="showConfirm"
+          :disabled="disableConfirm"
+          size="lg"
+          block
+          variant="success"
+          @click="confirmCheck"
+          >Check-in</b-button
+        >
+        <b-button
+          v-if="StaffInfo.level >= 2 && showCancel"
+          size="lg"
+          block
+          variant="danger"
+          @click="cancelCheck"
+          >Undo Check-in</b-button
+        >
       </b-col>
       <b-col md="4">
-        <p>{{ targetStudentID }}</p>
-        <SearchBox :target="targetStudentID" @selectperson="SearchConfirm" />
+        <SearchBox @selectperson="SearchConfirm" />
       </b-col>
     </b-row>
     <Footer />
@@ -39,16 +55,53 @@ export default {
         en_name: ' ',
         year: '',
         stdid: '',
-        dep: ''
+        dep: '',
+        isReg: true,
+        isChecked: false
       },
-      targetStudentID: ''
+      raw_dat: null,
+      StaffInfo: {
+        level: 0
+      },
+      showCancel: false,
+      showConfirm: false,
+      disableConfirm: false
     }
   },
   async created() {
-    await this.$http.get('/auth/check')
+    await this.$http.get('/auth/check').then(resp => {
+      this.StaffInfo = resp.data
+    })
   },
   methods: {
-    SearchConfirm(SearchData) {
+    confirmCheck() {
+      this.disableConfirm = true
+      this.$http
+        .get('/checkin/check', {
+          params: {
+            id: this.info.stdid
+          }
+        })
+        .then(() => {
+          this.SearchConfirm(this.raw_dat)
+        })
+    },
+    cancelCheck() {
+      this.$http
+        .get('/checkin/undo', {
+          params: {
+            id: this.info.stdid
+          }
+        })
+        .then(() => {
+          this.info.isChecked = false
+          this.disableConfirm = false
+          this.showConfirm = true
+        })
+    },
+    async SearchConfirm(SearchData) {
+      this.raw_dat = SearchData
+      this.showCancel = true
       const thisyear = 61
       this.info.img = '/api/student/image?id=' + SearchData.StudentID
       this.info.stdid = SearchData.StudentID
@@ -57,6 +110,16 @@ export default {
       this.info.en_name = SearchData.ENName + ' ' + SearchData.ENSurname
       this.info.year =
         thisyear - Math.floor(SearchData.StudentID / 100000000) + 1
+      this.info.isReg = SearchData.isRegis === undefined || SearchData.isRegis
+
+      if (this.info.isReg) {
+        await this.$http.get('/checkin/check', {
+          params: {
+            id: this.info.stdid
+          }
+        })
+      }
+
       this.$http
         .get('/student/info', {
           params: {
@@ -68,6 +131,12 @@ export default {
           this.info.surname = resp.data.thainame.split(this.info.name + ' ')[1]
           this.info.en_name = resp.data.engname
           this.info.dep = resp.data['major-id']
+          this.info.isReg = resp.data.registered
+          this.info.isChecked = resp.data.checked
+          if (!(this.info.isReg || this.info.isChecked)) {
+            this.disableConfirm = false
+            this.showConfirm = true
+          }
         })
     }
   }
