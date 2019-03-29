@@ -1,5 +1,14 @@
 <template>
   <div>
+    <b-alert v-show="!firstLetter" variant="danger" show>
+      <h5>กรุณาอ่านก่อนดำเนินการ</h5>
+      <hr />
+      <p>
+        ไม่อนุญาตให้ทำสำเนาข้อมูลใด ๆ ที่ปรากฎบนหน้าจอนี้
+        หากมีการฟ้องร้องทางกฎหมาย หรือดำเนินโทษใด ๆ จากการกระทำดังกล่าว
+        ให้ถือว่าผู้เรียกค้นข้อมูล เป็นผู้รับผิดชอบแต่เพียงผู้เดียว
+      </p>
+    </b-alert>
     <b-card
       border-variant="primary"
       header="Search Box"
@@ -42,7 +51,7 @@
         </b-list-group-item>
       </b-list-group>
     </b-card>
-    <b-alert v-if="!firstLetter" variant="info" class="mt-3" show>
+    <b-alert v-show="!firstLetter" variant="info" class="mt-3" show>
       <h4>Instruction</h4>
       <hr />
       <p>
