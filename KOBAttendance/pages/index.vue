@@ -103,7 +103,11 @@ export default {
       this.raw_dat = SearchData
       this.showCancel = true
       const thisyear = 61
-      this.info.img = '/api/student/image?id=' + SearchData.StudentID
+      this.info.img =
+        '/api/student/image?id=' +
+        SearchData.StudentID +
+        '&rand=' +
+        Math.random()
       this.info.stdid = SearchData.StudentID
       this.info.name = SearchData.Name
       this.info.surname = SearchData.Surname
