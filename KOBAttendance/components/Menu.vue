@@ -15,10 +15,6 @@
             <b-dropdown-item href="#">Student Management</b-dropdown-item>
             <b-dropdown-item href="#">Attendance Management</b-dropdown-item>
             <b-dropdown-item href="#">Staff Management</b-dropdown-item>
-            <b-dropdown-item href="#">2FA Management</b-dropdown-item>
-            <b-dropdown-item href="#"
-              >Authentication Management</b-dropdown-item
-            >
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
