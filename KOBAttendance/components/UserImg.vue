@@ -9,7 +9,7 @@ export default {
   props: {
     imgurl: {
       type: String,
-      default: 'http://bucroccs.bu.ac.th/image/person.png'
+      default: '/unknow.png'
     }
   }
 }
