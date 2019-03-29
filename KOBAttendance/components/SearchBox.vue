@@ -16,6 +16,8 @@
           @keyup.enter="confirmFirst"
           @keyup.up="keyup"
           @keyup.down="keydown"
+          @keydown.17="barcodePrevent"
+          @keydown.74="barcodePrevent"
         />
       </b-card-text>
       <b-list-group flush>
@@ -74,7 +76,8 @@ export default {
       keyword: '',
       result: [],
       selected: null,
-      selected_index: -1
+      selected_index: -1,
+      enter_loop: 0
     }
   },
   watch: {
@@ -84,11 +87,21 @@ export default {
     }, 100)
   },
   methods: {
+    barcodePrevent(event) {
+      event.preventDefault()
+    },
     confirmFirst() {
       if (this.selected !== null) {
         this.onSelectPerson(this.selected)
+        this.keyword = ''
+        this.enter_loop = 0
+      } else if (this.enter_loop < 5) {
+        setTimeout(() => {
+          this.confirmFirst(++this.enter_loop)
+        }, 500)
+      } else {
+        this.enter_loop = 0
       }
-      this.keyword = ''
     },
     setCaretPosition(ctrl, pos) {
       ctrl.focus()
