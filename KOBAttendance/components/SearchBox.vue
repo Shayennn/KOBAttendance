@@ -26,7 +26,6 @@
           @keyup.up="keyup"
           @keyup.down="keydown"
           @keydown.17="barcodePrevent"
-          @keydown.74="barcodePrevent"
         />
       </b-card-text>
       <b-list-group flush>
